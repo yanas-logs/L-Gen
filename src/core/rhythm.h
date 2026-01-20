@@ -5,8 +5,7 @@ class Rhythm {
 public:
     explicit Rhythm(int bpm);
 
-    double secondsPerBeat() const;
-    std::vector<double> generate(int steps) const;
+    std::vector<int> generate(int steps) const;
 
 private:
     int bpm;

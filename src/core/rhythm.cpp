@@ -1,18 +1,11 @@
-#include "rhythm.h"
+#include "core/rhythm.h"
 
 Rhythm::Rhythm(int bpm) : bpm(bpm) {}
 
-double Rhythm::secondsPerBeat() const {
-    return 60.0 / bpm;
-}
-
-std::vector<double> Rhythm::generate(int steps) const {
-    std::vector<double> pattern;
-    double stepTime = secondsPerBeat() / 2.0; // eighth notes
-
+std::vector<int> Rhythm::generate(int steps) const {
+    std::vector<int> pattern;
     for (int i = 0; i < steps; ++i) {
-        pattern.push_back(stepTime);
+        pattern.push_back(i % 2); // basic on/off rhythm
     }
-
     return pattern;
 }

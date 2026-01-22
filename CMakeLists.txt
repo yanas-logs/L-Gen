@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(lgen_core
     src/core/rhythm.cpp
     src/core/scale.cpp
+    src/core/pattern.cpp
 )
 
 target_include_directories(lgen_core

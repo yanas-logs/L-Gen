@@ -1,24 +1,29 @@
 #include <iostream>
 #include "core/pattern.h"
-#include "core/rhythm.h"
+
+using namespace lgen::core;
 
 int main() {
-    Rhythm rhythm(120);
-    Pattern pattern(8);
+    Pattern pattern;
 
-    auto r = rhythm.generate(8);
+    pattern.addStep({ StepType::Rest });
+    pattern.addStep({ StepType::Note, 0, 1.0f, true }); // root, accent
+    pattern.addStep({ StepType::Rest });
+    pattern.addStep({ StepType::Note, 2, 0.8f }); // scale degree 
 
-    for (int i = 0; i < r.size(); ++i) {
-        if (r[i] == 1) {
-            pattern.setStep(i, 60); // C4
+    auto generated = pattern.generate();
+
+    std::cout << "Pattern v2:\n";
+    for (const auto& step : generated) {
+        if (step.type == StepType::Rest) {
+            std::cout << "- ";
+        } else {
+            std::cout << step.noteOffset;
+            if (step.accent) std::cout << "!";
+            std::cout << " ";
         }
     }
 
-    std::cout << "Pattern: ";
-    for (const auto& step : pattern.getSteps()) {
-        std::cout << step.note << " ";
-    }
     std::cout << "\n";
-
     return 0;
 }

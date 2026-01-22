@@ -1,17 +1,41 @@
-#include "core/pattern.h"
+#include "pattern.h"
 
-Pattern::Pattern(int steps)
-    : steps(steps, {-1, 0}) {}
+namespace lgen::core {
 
-void Pattern::setStep(int index, int note, int velocity) {
-    if (index < 0 || index >= steps.size()) return;
-    steps[index] = {note, velocity};
+Pattern::Pattern() = default;
+
+void Pattern::addStep(const PatternStep& step) {
+    steps.push_back(step);
 }
 
-const std::vector<Step>& Pattern::getSteps() const {
-    return steps;
+void Pattern::clear() {
+    steps.clear();
 }
 
-int Pattern::size() const {
+size_t Pattern::size() const {
     return steps.size();
 }
+
+std::vector<PatternStep> Pattern::generate() const {
+    std::vector<PatternStep> result;
+    result.reserve(steps.size());
+
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+
+    for (const auto& step : steps) {
+        float roll = dist(gen);
+
+        if (roll <= step.probability) {
+            result.push_back(step);
+        } else {
+            // fail -> rest
+            result.push_back(PatternStep{ StepType::Rest });
+        }
+    }
+
+    return result;
+}
+
+} // namespace lgen::core

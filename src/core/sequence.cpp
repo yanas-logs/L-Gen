@@ -3,8 +3,11 @@
 namespace lgen {
 
 Sequence::Sequence(const Pattern& pattern,
-                   const Rhythm& rhythm)
-    : m_pattern(pattern), m_rhythm(rhythm) {}
+                   const Rhythm& rhythm,
+                   const Groove* groove)
+    : m_pattern(pattern)
+    , m_rhythm(rhythm)
+    , m_groove(groove) {}
 
 SequenceEvent Sequence::next() {
     SequenceEvent ev;
@@ -12,8 +15,13 @@ SequenceEvent Sequence::next() {
 
     int p = m_pattern.at(m_step);
     ev.active = (p >= 0);
-    ev.value = p;
+    ev.value  = p;
     ev.accent = m_rhythm.isAccent(m_step);
+
+    if (m_groove) {
+        ev.timeOffset = m_groove->timeOffset(m_step, length());
+        ev.velocity   = m_groove->velocityScale(m_step, length());
+    }
 
     m_step = (m_step + 1) % length();
     return ev;

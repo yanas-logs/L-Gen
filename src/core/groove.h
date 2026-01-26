@@ -6,15 +6,11 @@ class Groove {
 public:
     virtual ~Groove() = default;
 
-    // step = index step
-    // length = total step
-    virtual float timeOffset(int step, int length) const {
-        return 0.0f;
-    }
+    // micro timing offset (fraction of step)
+    virtual float timeOffset(int step, int length) const = 0;
 
-    virtual float velocityScale(int step, int length) const {
-        return 1.0f;
-    }
+    // velocity / intensity scaling
+    virtual float velocityScale(int step, int length) const = 0;
 };
 
 } // namespace lgen

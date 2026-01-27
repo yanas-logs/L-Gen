@@ -1,8 +1,8 @@
 #include <iostream>
-
 #include "core/pattern.h"
 #include "core/rhythm.h"
 #include "core/sequence.h"
+#include "core/groove/swing.h"
 
 using namespace lgen;
 
@@ -23,9 +23,14 @@ int main() {
     Rhythm rhythm(120); // bpm
 
     // ======================
-    // 3. Sequence (engine)
+    // 3. Groove (human feel)
     // ======================
-    Sequence seq(pattern, rhythm);
+    SwingGroove swing(0.6f);
+
+    // ======================
+    // 4. Sequence (engine)
+    // ======================
+    Sequence seq(pattern, rhythm, &swing);
 
     std::cout << "Sequence output:\n";
 
@@ -37,7 +42,8 @@ int main() {
         } else {
             std::cout << ev.value;
             if (ev.accent) std::cout << "!";
-            std::cout << " ";
+            std::cout << "(t:" << ev.timeOffset
+                      << ",v:" << ev.velocity << ") ";
         }
     }
 
